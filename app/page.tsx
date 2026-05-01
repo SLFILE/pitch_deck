@@ -6,6 +6,7 @@ import Loader from "@/lib/components/loader";
 import { Suspense } from "react";
 const Home = dynamic(() => import("@/lib/threejs/canvas/home/home"), {
   ssr: false,
+  loading: () => <Loader />,
 });
 
 export default function Page() {
