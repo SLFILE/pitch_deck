@@ -1,7 +1,6 @@
 
 # Interview Project
 
-sandbox:/Cg7er3KqaoQ8ZDqRBEPmw.png
 
 ## 📖 Overview
 This project is a **fully interactive, browser-based sales deck** designed to showcase one of the world’s largest shopping malls. It merges **retail, dining, entertainment, hospitality, and live events** into a cinematic, luxury-inspired digital experience. The tool replaces fragmented sales presentations with a seamless, high-impact pitch.
