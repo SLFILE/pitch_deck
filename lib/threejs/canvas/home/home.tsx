@@ -19,19 +19,23 @@ import { FeatureBlock } from "@/lib/kpi/sealife/kpi_data_sealife";
 import { Audio } from "@/lib/utils/audio";
 
 import VideoScene from "@/lib/components/threejs/video_scene";
-
+import ImageView from "@/lib/components/image_view";
 import { useFrame } from "@react-three/fiber";
-
+import { Images } from "@/lib/utils/image";
 import { SiGoogledisplayandvideo360 } from "react-icons/si";
+
+import { FaImage } from "react-icons/fa";
 
 const ZoomMotion = ({
   children,
   setSelectedVideo,
+  setSelectedImage,
   onSelect,
   handleKPI,
 }: {
   children: React.ReactNode;
   setSelectedVideo: (val: string) => void;
+  setSelectedImage: (val: string) => void;
   onSelect: (val: boolean) => void;
   handleKPI: (val: FeatureBlock[]) => void;
 }) => {
@@ -45,7 +49,8 @@ const ZoomMotion = ({
       e.object &&
       e.object.name !== "v_board_3" &&
       e.object.name !== "vboard_1" &&
-      e.object.name !== "board_1"
+      e.object.name !== "board_1" &&
+      !/^board_[1-8]$/.test(e.object.name)
     ) {
       onSelect(true);
     }
@@ -57,13 +62,17 @@ const ZoomMotion = ({
     } else if (e.object.name === "board_1") {
       setSelectedVideo(video_texture_info.board_1.url);
     }
+
+    if (/^board_[1-8]$/.test(e.object.name)) {
+      setSelectedImage("fifa_cup.jpg");
+    }
     clickSound();
 
     setTimeout(() => {
       boundApi.refresh(e.object).fit();
 
       let objectName = e.object?.parent?.name;
-      console.log("CHECK", objectName);
+      console.log("CHECK", e.object.name);
       if (objectName) {
         const kpi = KPIOMap[objectName];
         kpi && handleKPI(kpi);
@@ -126,6 +135,8 @@ function Avenu(model: ModelConfig) {
   const [videEnlarge, setVideoEnlarge] = useState(false);
   const [currentKPI, setCurrentKPI] = useState(KPI.sealife);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [imageView, setImageView] = useState(false);
   const handleKPI = (kpi: FeatureBlock[]) => {
     setCurrentKPI(kpi);
   };
@@ -137,6 +148,7 @@ function Avenu(model: ModelConfig) {
           <ZoomMotion
             onSelect={setSelect}
             handleKPI={handleKPI}
+            setSelectedImage={setSelectedImage}
             setSelectedVideo={setSelectedVideo}
           >
             <primitive
@@ -165,6 +177,19 @@ function Avenu(model: ModelConfig) {
         </div>
       )}
 
+      {selectedImage && (
+        <div className="fixed bottom-35 right-6 z-9999">
+          <button
+            onClick={() => setImageView(true)}
+            className="group flex cursor-pointer items-center gap-3 px-4 py-2 bg-black/20 hover:bg-black/30 border border-white/10 backdrop-blur-md rounded-full transition-all duration-300 shadow-xl"
+          >
+            <div className="flex items-center gap-0.75 h-4 w-6 justify-center">
+              <FaImage color="white" />
+            </div>
+          </button>
+        </div>
+      )}
+
       {videEnlarge && (
         <VideoPlayer
           isOpen={videEnlarge}
@@ -172,6 +197,8 @@ function Avenu(model: ModelConfig) {
           videoSrc={selectedVideo}
         />
       )}
+
+      {<ImageView isOpen={imageView} onClose={setImageView} items={Images} />}
     </div>
   );
 }

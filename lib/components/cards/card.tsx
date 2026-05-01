@@ -1,6 +1,7 @@
 import React from "react";
 
 import Image from "next/image";
+
 interface CardProp {
   id: number;
   tagbar?: string | null;
@@ -34,20 +35,30 @@ const CardK = ({
           <p>{tagbar}</p>
         </div>
       )}
-
       {imageUri && <Image src={imageUri} alt="" />}
       {Glyph && (
         <div className="bg-white/20 p-2 m-2 w-8 rounded-full ">
           <Glyph />
         </div>
       )}
-      <section>
-        {headingLarge && <h1 className="text-5xl pt-2 pb-2">{headingLarge}</h1>}
-
-        {headingMedium && (
-          <h1 className="text-2xl pt-2 pb-2">{headingMedium}</h1>
-        )}
-        {mainContent && <h5 className="line-clamp-6">{mainContent}</h5>}
+      <section className="flex flex-col  h-full">
+        <div>
+          {headingLarge && (
+            <h1 className="text-[clamp(.7rem,2rem,3rem)] pt-2 pb-2">
+              {headingLarge}
+            </h1>
+          )}
+        </div>
+        <div>
+          {headingMedium && (
+            <h1 className="text-[clamp(.7rem,1.7rem,2.5rem)] pt-2 pb-2">
+              {headingMedium}
+            </h1>
+          )}{" "}
+        </div>
+        <div>
+          {mainContent && <h5 className="line-clamp-6">{mainContent}</h5>}
+        </div>
       </section>
     </div>
   );

@@ -24,7 +24,7 @@ export default function Board({
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="w-[80%] h-[80%] grid md:grid-cols-[4fr_1fr] gap-6 pointer-events-auto"
           >
-            <div className="  bg-[#1a1c20]/60 backdrop-blur-xl border-l md:border border-white/10 rounded-2xl p-6 md:p-12 text-white z-10 shadow-2xl transition-all duration-500 overflow-hidden">
+            <div className="  bg-[#1a1c20]/60 backdrop-blur-xl border-l md:border border-white/10 rounded-2xl p-6  md:p-12 text-white z-10 shadow-2xl transition-all duration-500 overflow-hidden">
               <h1 className="font-bold tracking-wider mb-2 text-2xl">
                 {KPI[0].branch}
               </h1>
@@ -39,7 +39,7 @@ export default function Board({
               </div>
             </div>
 
-            <div className="flex  flex-col gap-4">
+            <div className="flex  flex-col gap-4 ">
               <div className="flex-1  bg-[#1a1c20]/60 backdrop-blur-xl rounded-2xl  p-6">
                 <div className="flex w-full justify-end">
                   <button
