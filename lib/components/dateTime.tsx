@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 const Decor = () => {
   const [time, setTime] = useState(new Date());
   useEffect(() => {
+    const update = () => setTime(new Date());
+    update();
     const timer = setInterval(() => setTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
