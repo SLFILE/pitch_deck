@@ -7,7 +7,7 @@ import { Mesh } from "three";
 import { models } from "../utils/model";
 import * as THREE from "three";
 
-const Model = dynamic(() => import("../components/threejs/model"), {
+const DracoModel = dynamic(() => import("./threejs/draco"), {
   ssr: false,
 });
 
@@ -21,12 +21,12 @@ const Loader = () => {
       }
     });
     return (
-      <Model
+      <DracoModel
         scale={[4, 4, 4]}
-        config={models.mall_logo}
+        model_uri={models.mall_logo.file}
         ref={sphereRef}
-        postion={models.mall_logo.position}
-        roatation={models.mall_logo.rotation}
+        position={models.mall_logo.position}
+        rotation={models.mall_logo.rotation}
       />
     );
   };

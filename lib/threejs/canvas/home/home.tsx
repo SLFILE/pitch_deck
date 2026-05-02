@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import { ThreeEvent } from "@react-three/fiber";
 
-import { Bounds, useBounds, useGLTF } from "@react-three/drei";
+import { Bounds, useBounds } from "@react-three/drei";
 
-import { ModelConfig } from "@/lib/utils/model";
+import { ModelConfig, models } from "@/lib/utils/model";
 
 import { Videos } from "@/lib/utils/video";
 import Board from "@/lib/components/board";
-
+import * as THREE from "three";
 import GlobalScene from "@/lib/components/global";
 
 import VideoPlayer from "@/lib/components/video";
@@ -17,14 +17,17 @@ import { useAudio } from "@/lib/hooks/three/useAudio";
 import { KPI, KPIOMap } from "@/lib/kpi/KPI";
 import { FeatureBlock } from "@/lib/kpi/sealife/kpi_data_sealife";
 import { Audio } from "@/lib/utils/audio";
-
+import dynamic from "next/dynamic";
 import VideoScene from "@/lib/components/threejs/video_scene";
 import ImageView from "@/lib/components/image_view";
 import { useFrame } from "@react-three/fiber";
 import { Images } from "@/lib/utils/image";
 import { SiGoogledisplayandvideo360 } from "react-icons/si";
-
+import { useRef } from "react";
 import { FaImage } from "react-icons/fa";
+const DracoModel = dynamic(() => import("@/lib/components/threejs/draco"), {
+  ssr: false,
+});
 
 const ZoomMotion = ({
   children,
@@ -72,7 +75,7 @@ const ZoomMotion = ({
       boundApi.refresh(e.object).fit();
 
       let objectName = e.object?.parent?.name;
-      console.log("CHECK", e.object.name);
+
       if (objectName) {
         const kpi = KPIOMap[objectName];
         kpi && handleKPI(kpi);
@@ -130,8 +133,9 @@ const Animate = () => {
 };
 
 function Avenu(model: ModelConfig) {
-  const { scene } = useGLTF(model.file);
+  const modelRef = useRef<THREE.Group>(null);
   const [select, setSelect] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const [videEnlarge, setVideoEnlarge] = useState(false);
   const [currentKPI, setCurrentKPI] = useState(KPI.sealife);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
@@ -151,16 +155,33 @@ function Avenu(model: ModelConfig) {
             setSelectedImage={setSelectedImage}
             setSelectedVideo={setSelectedVideo}
           >
-            <primitive
+            <DracoModel
+              ref={modelRef}
+              model_uri={models.mall.file}
+              onUpdate={(self: any) => {
+                if (!isReady && self) setIsReady(true);
+              }}
               onPointerOver={() => (document.body.style.cursor = "pointer")}
               onPointerOut={() => (document.body.style.cursor = "auto")}
-              object={scene}
             />
           </ZoomMotion>
         </Bounds>
-        <VideoScene scene={scene} video_data={video_texture_info.vboard_3} />
-        <VideoScene scene={scene} video_data={video_texture_info.vboard_1} />
-        <VideoScene scene={scene} video_data={video_texture_info.board_1} />
+        {isReady && modelRef.current && (
+          <>
+            <VideoScene
+              scene={modelRef.current as THREE.Group}
+              video_data={video_texture_info.vboard_3}
+            />
+            <VideoScene
+              scene={modelRef.current as THREE.Group}
+              video_data={video_texture_info.vboard_1}
+            />
+            <VideoScene
+              scene={modelRef.current as THREE.Group}
+              video_data={video_texture_info.board_1}
+            />{" "}
+          </>
+        )}
       </GlobalScene>
 
       <Board isOpen={select} KPI={currentKPI} onClose={setSelect}></Board>
