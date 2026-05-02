@@ -62,6 +62,7 @@ export default function ImageView({
                     src={activeItem.uri}
                     alt={activeItem.metadata || activeItem.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover"
                     priority
                   />
