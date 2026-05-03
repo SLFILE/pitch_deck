@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
-
+import { useAudioRef } from "@/lib/context/AudioContext";
 export default function useAmbientAudio(
   uri?: string,
   volume?: number,
   audioLoop?: boolean,
 ) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
+  const audioRef = useAudioRef();
   useEffect(() => {
     const audio = new Audio(uri);
     audio.loop = audioLoop ?? true;

@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import AudioProvider from "@/lib/components/audioprovider";
-
+import { SoundProvider } from "@/lib/context/AudioContext";
 import Decor from "@/lib/components/dateTime";
 
 import Logo from "@/lib/components/logo";
@@ -35,12 +35,14 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-black">
-        <Analytics />
-        <Logo />
-        <AudioProvider />
-        <SideMenu />
-        {children}
-        <Decor />
+        <SoundProvider>
+          <Analytics />
+          <Logo />
+          <AudioProvider />
+          <SideMenu />
+          {children}
+          <Decor />{" "}
+        </SoundProvider>
       </body>
     </html>
   );

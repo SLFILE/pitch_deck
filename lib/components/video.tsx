@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import React from "react";
+import React, { useEffect } from "react";
+import { useAudioRef } from "../context/AudioContext";
 
 interface GlobalVideoOverlayProps {
   isOpen: boolean;
@@ -12,6 +13,24 @@ const GlobalVideoOverlay: React.FC<GlobalVideoOverlayProps> = ({
   onClose,
   videoSrc,
 }) => {
+  const audioRef = useAudioRef();
+
+  const handleAmbientAudio = () => {
+    const ambientSound = audioRef.current;
+
+    if (!ambientSound) return;
+
+    isOpen ? ambientSound.pause() : ambientSound.play().catch(() => {});
+  };
+
+  useEffect(() => {
+    handleAmbientAudio();
+
+    return () => {
+      audioRef.current && audioRef.current.play();
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen && videoSrc && (

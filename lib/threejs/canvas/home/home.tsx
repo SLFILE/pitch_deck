@@ -25,6 +25,7 @@ import { Images } from "@/lib/utils/image";
 import { SiGoogledisplayandvideo360 } from "react-icons/si";
 import { useRef } from "react";
 import { FaImage } from "react-icons/fa";
+
 const DracoModel = dynamic(() => import("@/lib/components/threejs/draco"), {
   ssr: false,
 });
@@ -48,27 +49,22 @@ const ZoomMotion = ({
 
   const handleClick = (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation();
-    if (
-      e.object &&
-      e.object.name !== "v_board_3" &&
-      e.object.name !== "vboard_1" &&
-      e.object.name !== "board_1" &&
-      !/^board_[1-8]$/.test(e.object.name)
-    ) {
+    const mesh = e.object.name;
+
+    if (mesh && !(mesh in video_texture_info) && !/^board_[1-8]$/.test(mesh)) {
       onSelect(true);
     }
 
-    if (e.object.name === "v_board_3") {
-      setSelectedVideo(video_texture_info.vboard_3.url);
-    } else if (e.object.name === "vboard_1") {
-      setSelectedVideo(video_texture_info.vboard_1.url);
-    } else if (e.object.name === "board_1") {
-      setSelectedVideo(video_texture_info.board_1.url);
+    if (mesh && mesh in video_texture_info) {
+      setSelectedVideo(
+        video_texture_info[mesh as keyof typeof video_texture_info].url,
+      );
     }
 
     if (/^board_[1-8]$/.test(e.object.name)) {
       setSelectedImage("fifa_cup.jpg");
     }
+
     clickSound();
 
     setTimeout(() => {
@@ -106,7 +102,7 @@ const ZoomMotion = ({
 };
 
 const video_texture_info = {
-  vboard_3: {
+  v_board_3: {
     target: "v_board_3",
     curl: Videos.avenue.curl,
     url: Videos.avenue.url,
@@ -170,7 +166,7 @@ function Avenu(model: ModelConfig) {
           <>
             <VideoScene
               scene={modelRef.current as THREE.Group}
-              video_data={video_texture_info.vboard_3}
+              video_data={video_texture_info.v_board_3}
             />
             <VideoScene
               scene={modelRef.current as THREE.Group}
