@@ -215,7 +215,9 @@ function Avenu(model: ModelConfig) {
         />
       )}
 
-      {<ImageView isOpen={imageView} onClose={setImageView} items={Images} />}
+      {imageView && (
+        <ImageView isOpen={imageView} onClose={setImageView} items={Images} />
+      )}
     </div>
   );
 }
