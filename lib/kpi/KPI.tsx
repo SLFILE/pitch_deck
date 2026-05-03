@@ -25,4 +25,7 @@ export const KPIOMap: Record<string, FeatureBlock[]> = {
   Lego: KPI.lego,
   Curve004_4: KPI.lego,
   Scene: KPI.avenue,
+  SeaLifeAquarium001: KPI.avenue,
+  Curve_0: KPI.lego,
+  Curve003_3: KPI.lego,
 };
