@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-
+import { useIsClient } from "../hooks/react/useIsClient";
 const Decor = () => {
+  const isClient = useIsClient();
+
   const [time, setTime] = useState(new Date());
   useEffect(() => {
     const update = () => setTime(new Date());
@@ -20,6 +22,7 @@ const Decor = () => {
     month: "short",
     day: "numeric",
   });
+  if (!isClient) return;
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 px-5 py-2.5 bg-black/20 backdrop-blur-md border border-white/10 rounded-full text-white/90 text-sm font-medium shadow-2xl">
       <div className="flex items-center gap-2">

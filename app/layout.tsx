@@ -11,11 +11,13 @@ import Logo from "@/lib/components/logo";
 import SideMenu from "@/lib/components/sideNav";
 const geistSans = Geist({
   variable: "--font-geist-sans",
+  display: "swap",
   subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  display: "swap",
   subsets: ["latin"],
 });
 
@@ -41,7 +43,7 @@ export default function RootLayout({
           <AudioProvider />
           <SideMenu />
           {children}
-          <Decor />{" "}
+          <Decor />
         </SoundProvider>
       </body>
     </html>
